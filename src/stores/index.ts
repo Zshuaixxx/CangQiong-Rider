@@ -10,4 +10,4 @@ pinia.use(persist)
 export default pinia
 
 // 模块统一导出
-export * from './modules/member'
+export * from './modules/rider'
