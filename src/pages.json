@@ -37,6 +37,12 @@
 			"style": {
 				"navigationBarTitleText": "weixin"
 			}
+		},
+    {
+			"path": "pages/register/rigister",
+			"style": {
+				"navigationBarTitleText": "注册"
+			}
 		}
 	],
 	"globalStyle": {

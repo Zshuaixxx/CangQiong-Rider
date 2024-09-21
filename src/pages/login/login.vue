@@ -5,6 +5,12 @@ const goAccountLogin = () => {
     url: '/pages/accountLogin/accountLogin',
   })
 }
+//跳转注册页
+const goRegister = () => {
+  uni.navigateTo({
+    url: '/pages/register/rigister',
+  })
+}
 </script>
 
 <template>
@@ -16,7 +22,7 @@ const goAccountLogin = () => {
     <view class="title">苍穹外卖，使命必达</view>
     <view class="btn">
       <text class="button" @tap="goAccountLogin">登录</text>
-      <text class="button">注册</text>
+      <text class="button" @tap="goRegister">注册</text>
     </view>
   </view>
 </template>

@@ -1,6 +1,9 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 import { passwordLogin } from '@/api/login'
+import { useRiderStore } from '@/stores'
+
+const riderStore = useRiderStore()
 
 const riderPhone = ref()
 const riderPassword = ref()
@@ -12,6 +15,15 @@ const login = async () => {
     password: riderPassword.value,
   }
   const res = await passwordLogin(passwordLoginParam)
+  riderStore.setloginInfo(res.data)
+  uni.showToast({
+    title: '登录成功',
+    icon: 'success',
+  })
+  //跳转到订单广场
+  setTimeout(() => {
+    uni.switchTab({ url: '/pages/index/index' })
+  }, 500)
 }
 // 微信登录
 const weixinLogin = () => {
@@ -20,7 +32,11 @@ const weixinLogin = () => {
   })
 }
 //注册
-const goRegister = () => {}
+const goRegister = () => {
+  uni.navigateTo({
+    url: '/pages/register/rigister',
+  })
+}
 </script>
 
 <template>

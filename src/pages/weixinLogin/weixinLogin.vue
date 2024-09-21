@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { weixinLogin } from '@/api/login'
+import { useRiderStore } from '@/stores'
+
+const riderStore = useRiderStore()
+
 const AvatarDefault =
   'https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0'
 const avatarUrl = ref('')
@@ -37,7 +41,15 @@ const handleLogin = async () => {
     avatar: avatarUrl.value,
     name: name.value,
   })
-  console.log('微信登录', res)
+  riderStore.setloginInfo(res.data)
+  uni.showToast({
+    title: '登录成功',
+    icon: 'success',
+  })
+  //跳转到订单广场
+  setTimeout(() => {
+    uni.switchTab({ url: '/pages/index/index' })
+  }, 500)
 }
 </script>
 

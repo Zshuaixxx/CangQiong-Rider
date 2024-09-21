@@ -7,16 +7,14 @@ const RiderStore = useRiderStore()
 //请求拦截器
 const Interceptor = {
   invoke(options: UniApp.RequestOptions) {
-    // console.log('拦截器',options)
     if (!options.url.startsWith('http')) {
       options.url = baseURL + options.url
-      // console.log('添加请求路径完成',options.url)
     }
     options.timeout = 10000
     options.header = {
       ...options.header,
     }
-    const token = RiderStore.profile?.token
+    const token = RiderStore.loginInfo?.token
     if (token) {
       options.header.token = token
     }
@@ -27,7 +25,7 @@ uni.addInterceptor('uploadFile', Interceptor)
 
 //响应拦截器
 interface resdata<T> {
-  code: string
+  code: number
   msg: string
   data: T
 }
@@ -38,9 +36,17 @@ export const http = <T>(options: UniApp.RequestOptions) => {
       ...options,
       success(res) {
         if (res.statusCode >= 200 && res.statusCode < 300) {
-          resolve(res.data as resdata<T>)
+          if ((res.data as resdata<T>).code === 1) {
+            resolve(res.data as resdata<T>)
+          } else {
+            uni.showToast({
+              icon: 'none',
+              text: (res.data as resdata<T>).msg || '请求失败',
+            })
+            reject(res)
+          }
         } else if (res.statusCode === 401) {
-          // memberStore.clearProfile()
+          RiderStore.clearloginInfo()
           uni.showToast({
             icon: 'none',
             text: '请先登录',
