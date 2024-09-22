@@ -57,6 +57,7 @@
 		"navigationBarBackgroundColor": "#24acf2",
 		"backgroundColor": "#F8F8F8"
 	},
+	"requiredPrivateInfos": ["location"],
 	// 设置 TabBar
 	"tabBar": {
 		"color": "#333",

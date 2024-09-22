@@ -1,5 +1,5 @@
 {
-  "name": "小兔鲜儿",
+  "name": "苍穹众包",
   "appid": "",
   "description": "",
   "versionName": "1.0.0",
@@ -54,7 +54,13 @@
     "setting": {
       "urlCheck": false
     },
-    "usingComponents": true
+    "usingComponents": true,
+    "permission" : {
+      "scope.userLocation" : {
+    "desc":"你的位置信息将用于小程序位置接口的效果展示"
+        }
+    },
+    "requiredPrivateInfos" :[ "chooseLocation", "chooseAddress", "choosePoi", "getLocation" ],
   },
   "mp-alipay": {
     "usingComponents": true

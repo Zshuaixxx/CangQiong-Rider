@@ -5,15 +5,15 @@ import type { loginResult } from '@/types/login'
 export const useRiderStore = defineStore(
   'rider',
   () => {
-    // 会员信息
+    // 登录信息
     const loginInfo = ref<loginResult>()
 
-    // 保存会员信息，登录时使用
+    // 保存登录信息，登录时使用
     const setloginInfo = (val: loginResult) => {
       loginInfo.value = val
     }
 
-    // 清理会员信息，退出时使用
+    // 清理登录信息，退出时使用
     const clearloginInfo = () => {
       loginInfo.value = undefined
     }

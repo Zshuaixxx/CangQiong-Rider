@@ -49,6 +49,7 @@
     ]
   },
   "dependencies": {
+    "@amap/amap-jsapi-loader": "^1.0.1",
     "@dcloudio/uni-app": "3.0.0-alpha-3081220230802001",
     "@dcloudio/uni-app-plus": "3.0.0-alpha-3081220230802001",
     "@dcloudio/uni-components": "3.0.0-alpha-3081220230802001",
