@@ -13,3 +13,10 @@ export const getSquareOrderListAPI = (getSquareOrderDTO: getSquareOrderDTO) => {
     data: getSquareOrderDTO,
   })
 }
+//骑手接单
+export const takeOrderAPI = (orderId: number) => {
+  return http({
+    url: `/rider/takeOrder/${orderId}`,
+    method: 'POST',
+  })
+}

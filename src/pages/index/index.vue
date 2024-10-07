@@ -2,7 +2,7 @@
 import { onMounted, ref } from 'vue'
 import { useLocationStore, useRiderStore } from '@/stores'
 import { chooseLocation } from '@/composables/useLocation'
-import { getSquareOrderListAPI } from '@/api/order'
+import { getSquareOrderListAPI, takeOrderAPI } from '@/api/order'
 import type { getSquareOrderDTO, SquareOrder } from '@/types/order'
 const locationStore = useLocationStore()
 
@@ -68,6 +68,17 @@ const deliveryTime = (inputDateTime: string) => {
   // 返回格式化的时间差字符串
   return '剩余' + minutesLast + '分钟'
 }
+/**
+ * 骑手接单
+ * @param orderId 订单id
+ */
+const takeOrder = async (orderId: number) => {
+  const res = await takeOrderAPI(orderId)
+  uni.showToast({
+    title: '恭喜，抢单成功',
+    icon: 'success',
+  })
+}
 onMounted(() => {
   if (!locationStore.location) {
     uni.showToast({
@@ -113,7 +124,7 @@ onMounted(() => {
           }}</span>
           <span class="time">{{ '送达时间' + item.estimatedDeliveryTime }}</span>
         </view>
-        <view class="grab">抢单</view>
+        <view class="grab" @tap="takeOrder(item.id)">抢单</view>
       </view>
     </scroll-view>
     <!-- 占位元素 -->

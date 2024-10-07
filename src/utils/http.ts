@@ -41,7 +41,7 @@ export const http = <T>(options: UniApp.RequestOptions) => {
           } else {
             uni.showToast({
               icon: 'none',
-              text: (res.data as resdata<T>).msg || '请求失败',
+              title: (res.data as resdata<T>).msg || '请求失败',
             })
             reject(res)
           }
@@ -49,7 +49,7 @@ export const http = <T>(options: UniApp.RequestOptions) => {
           RiderStore.clearloginInfo()
           uni.showToast({
             icon: 'none',
-            text: '请先登录',
+            title: '请先登录',
           })
           uni.navigateTo({
             url: '/pages/login/login',
@@ -58,14 +58,14 @@ export const http = <T>(options: UniApp.RequestOptions) => {
         } else {
           uni.showToast({
             icon: 'none',
-            text: (res.data as resdata<T>).msg || '请求失败',
+            title: (res.data as resdata<T>).msg || '请求失败',
           })
         }
       },
       fail(err) {
         uni.showToast({
           icon: 'none',
-          text: '网络错误',
+          title: '网络错误',
         })
         reject(err)
       },
