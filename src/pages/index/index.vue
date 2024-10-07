@@ -15,12 +15,12 @@ const isLowerLoading = ref(false)
 /**
  * 下拉加载更多订单
  */
-const orderListLower = async () => {
+const orderListLower = () => {
   if (!isLowerLoading.value && page.value * pageSize.value < total.value) {
     isLowerLoading.value = true
     page.value++
     squareOrderDTO.value!.page = page.value
-    await getSquareOrderList(squareOrderDTO.value!)
+    getSquareOrderList(squareOrderDTO.value!)
     setTimeout(() => {
       isLowerLoading.value = false
     }, 500)
@@ -39,6 +39,15 @@ const getSquareOrderList = async (getSquareOrderDTO: getSquareOrderDTO) => {
   const res = await getSquareOrderListAPI(getSquareOrderDTO)
   squareOrderList.value.push(...res.data.records)
   total.value = res.data.total
+}
+/**
+ * 刷新订单列表
+ */
+const refreshOrderList = () => {
+  squareOrderList.value = []
+  page.value = 1
+  squareOrderDTO.value!.page = page.value
+  getSquareOrderList(squareOrderDTO.value!)
 }
 /**
  * 获取订单剩余时间
@@ -111,7 +120,7 @@ onMounted(() => {
     <view style="height: 80rpx; width: 100%"></view>
     <!-- 底部刷新按钮 -->
     <view class="refresh-order">
-      <view class="refresh">刷新</view>
+      <view class="refresh" @tap="refreshOrderList()">刷新</view>
     </view>
   </view>
 </template>
