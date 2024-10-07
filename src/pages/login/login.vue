@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useRiderStore } from '@/stores'
+import { onMounted } from 'vue'
+
 //跳转账号登录
 const goAccountLogin = () => {
   uni.navigateTo({
@@ -11,6 +14,11 @@ const goRegister = () => {
     url: '/pages/register/rigister',
   })
 }
+onMounted(() => {
+  if (useRiderStore().loginInfo) {
+    uni.switchTab({ url: '/pages/index/index' })
+  }
+})
 </script>
 
 <template>

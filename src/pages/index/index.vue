@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { useLocationStore } from '@/stores'
+import { useLocationStore, useRiderStore } from '@/stores'
 import { chooseLocation } from '@/composables/useLocation'
 import { getSquareOrderListAPI } from '@/api/order'
 import type { getSquareOrderDTO, SquareOrder } from '@/types/order'
@@ -8,12 +8,37 @@ const locationStore = useLocationStore()
 
 const page = ref(1)
 const pageSize = ref(20)
-
+const total = ref(0)
+const squareOrderDTO = ref<getSquareOrderDTO>()
 const squareOrderList = ref<SquareOrder[]>([])
-//调用获取广场订单接口
+const isLowerLoading = ref(false)
+/**
+ * 下拉加载更多订单
+ */
+const orderListLower = async () => {
+  if (!isLowerLoading.value && page.value * pageSize.value < total.value) {
+    isLowerLoading.value = true
+    page.value++
+    squareOrderDTO.value!.page = page.value
+    await getSquareOrderList(squareOrderDTO.value!)
+    setTimeout(() => {
+      isLowerLoading.value = false
+    }, 500)
+  } else {
+    uni.showToast({
+      title: '没有更多订单了',
+      icon: 'error',
+    })
+  }
+}
+/**
+ * 调用获取广场订单接口
+ * @param getSquareOrderDTO
+ */
 const getSquareOrderList = async (getSquareOrderDTO: getSquareOrderDTO) => {
   const res = await getSquareOrderListAPI(getSquareOrderDTO)
   squareOrderList.value.push(...res.data.records)
+  total.value = res.data.total
 }
 /**
  * 获取订单剩余时间
@@ -42,14 +67,14 @@ onMounted(() => {
     })
     chooseLocation()
   }
-  const getSquareOrderDTO: getSquareOrderDTO = {
+  squareOrderDTO.value = {
     page: page.value,
     pageSize: pageSize.value,
     latitude: locationStore.location!.latitude,
     longitude: locationStore.location!.longitude,
     adcode: locationStore.location!.adcode,
   }
-  getSquareOrderList(getSquareOrderDTO)
+  getSquareOrderList(squareOrderDTO.value)
 })
 </script>
 
@@ -61,7 +86,7 @@ onMounted(() => {
       <text @click="chooseLocation">重新选择</text>
     </view>
     <!-- 订单列表 -->
-    <view class="order_list">
+    <scroll-view scroll-y="true" @scrolltolower="orderListLower()">
       <view v-for="item in squareOrderList" :key="item.id" class="order_item">
         <view class="price_time">
           <text>{{ '￥' + item.amount }}</text>
@@ -74,12 +99,17 @@ onMounted(() => {
           {{ item.remark }}
         </view>
         <view class="distance_time">
-          <span class="distance">{{ item.distance + '米' }}</span>
+          <span class="distance">{{
+            item.distance != 0 ? item.distance + '米' : '算力不足，距离计算错误'
+          }}</span>
           <span class="time">{{ '送达时间' + item.estimatedDeliveryTime }}</span>
         </view>
         <view class="grab">抢单</view>
       </view>
-    </view>
+    </scroll-view>
+    <!-- 占位元素 -->
+    <view style="height: 80rpx; width: 100%"></view>
+    <!-- 底部刷新按钮 -->
     <view class="refresh-order">
       <view class="refresh">刷新</view>
     </view>
@@ -110,6 +140,8 @@ onMounted(() => {
 .order_list {
   width: 100%;
   flex: 1;
+  overflow-y: auto;
+  scrollbar-width: none;
 }
 .order_item {
   width: 100%;
@@ -163,6 +195,7 @@ onMounted(() => {
   width: 100%;
   position: absolute;
   bottom: 0;
+  background-color: #90a4ae;
 }
 .refresh {
   width: 90%;

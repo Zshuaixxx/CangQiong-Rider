@@ -19,6 +19,7 @@ const chooseLocation = async () => {
   }
   uni.chooseLocation({
     success: function (res) {
+      console.log('位置', res)
       const newLocation: riderLocation = {
         name: res.name,
         address: res.address,
