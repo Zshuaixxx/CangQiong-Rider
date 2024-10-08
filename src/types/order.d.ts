@@ -48,43 +48,81 @@ export type OrderDetailDTO = {
  * 订单详情
  */
 export type OrderDetail = {
-  //订单id
+  /**
+   * 订单id
+   *  */
   id: number
-  //订单号
+  /**
+   * 订单号
+   */
   number: string
-  //下单时间
+  /**
+   * 下单时间
+   */
   orderTime: string
-  //结账时间
+  /**
+   * 结账时间
+   */
   checkoutTime: string
-  //实收金额
+  /**
+   * 实收金额
+   */
   amount: number
-  //备注
+  /**
+   * 备注
+   */
   remark: string
-  //手机号
+  /**
+   * 手机号
+   */
   phone: string
-  //地址
+  /**
+   * 地址
+   */
   address: string
-  //收货人
-  consigee: string
-  //预计送达时间
+  /**
+   * 收货人
+   */
+  consignee: string
+  /**
+   * 预计送达时间
+   */
   estimatedDeliveryTime: string
-  //配送状态
+  /**
+   * 配送状态
+   */
   deliveryStatus: number
-  //餐具数量状态
+  /**
+   * 餐具数量状态
+   */
   tablewareStatus: number
-  //餐具数量
+  /**
+   * 餐具数量
+   */
   tablewareNumber: number
-  //和骑手距离
+  /**
+   * 和骑手距离
+   */
   distance: number
-  //订单商品清单
+  /**
+   * 订单商品清单
+   */
   orderDetailList: Array<OrderItem>
-  //经纬度
+  /**
+   * 经纬度
+   */
   location: string
-  //行政区划编码
+  /**
+   *行政区划编码
+   */
   adcode: string
-  //订单状态 1待付款2待接单3已接单4派送中5已完成6已取消7退款
+  /**
+   * 订单状态 1待付款2待接单3已接单4派送中5已完成6已取消7退款
+   */
   status: number
-  //骑手id
+  /**
+   * 骑手id
+   */
   riderId: number
 }
 
