@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { onLoad } from '@dcloudio/uni-app'
 import { defineProps, ref } from 'vue'
-import { getOrderDetailAPI } from '@/api/order'
+import { getOrderDetailAPI, takeOrderAPI } from '@/api/order'
 import { useLocationStore, useRiderStore } from '@/stores'
 import type { OrderDetail, OrderDetailDTO } from '@/types/order'
 import { getHourMinute, calculateMinutesDifference } from '@/utils/time'
@@ -28,6 +28,30 @@ const getOrderDetail = async () => {
   console.log(res.data)
 }
 
+/**
+ * 点击导航
+ */
+const goMap = () => {
+  uni.openLocation({
+    latitude: Number(orderDetail.value?.location?.split(',')![0]),
+    longitude: Number(orderDetail.value?.location?.split(',')![1]),
+    scale: 18,
+  })
+}
+
+/**
+ * 骑手接单
+ * @param orderId 订单id
+ */
+const takeOrder = async (orderId: number) => {
+  const res = await takeOrderAPI(orderId)
+  uni.showToast({
+    title: '恭喜，抢单成功',
+    icon: 'success',
+  })
+  getOrderDetail()
+}
+
 onLoad(() => {
   getOrderDetail()
 })
@@ -47,7 +71,7 @@ onLoad(() => {
     </view>
     <view class="distance">
       <text>距离目的地：{{ orderDetail?.distance + 'm' }}</text>
-      <text class="distance_right">点击导航</text>
+      <text class="distance_right" @tap="goMap()">点击导航</text>
     </view>
   </view>
   <!-- 地址 收货人信息 -->
@@ -103,7 +127,9 @@ onLoad(() => {
   </view>
   <!-- 底部拍照 抢单 确实送达  -->
   <!-- 抢单 -->
-  <view v-if="orderDetail?.status === 3"></view>
+  <view v-if="orderDetail?.status === 3">
+    <view class="grab" @tap.stop="takeOrder(orderDetail.id)">抢单</view>
+  </view>
   <!-- 拍照 确认送达 -->
   <view
     v-else-if="
@@ -201,5 +227,15 @@ onLoad(() => {
   color: #999;
   opacity: 0.7;
   font-size: 14px;
+}
+.grab {
+  width: 85%;
+  height: 100rpx;
+  font-size: 30rpx;
+  margin: 20rpx auto;
+  text-align: center;
+  line-height: 100rpx;
+  border-radius: 50rpx;
+  background-color: #64e7d8;
 }
 </style>
