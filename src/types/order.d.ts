@@ -31,3 +31,75 @@ export type SquareOrder = {
   //订单备注
   remark: string
 }
+
+/**
+ * 订单详情DTO
+ */
+export type OrderDetailDTO = {
+  //订单id
+  orderId: number
+  //骑手位置纬度
+  latitude: number
+  //骑手位置经度
+  longitude: number
+}
+
+/**
+ * 订单详情
+ */
+export type OrderDetail = {
+  //订单id
+  id: number
+  //订单号
+  number: string
+  //下单时间
+  orderTime: string
+  //结账时间
+  checkoutTime: string
+  //实收金额
+  amount: number
+  //备注
+  remark: string
+  //手机号
+  phone: string
+  //地址
+  address: string
+  //收货人
+  consigee: string
+  //预计送达时间
+  estimatedDeliveryTime: string
+  //配送状态
+  deliveryStatus: number
+  //餐具数量状态
+  tablewareStatus: number
+  //餐具数量
+  tablewareNumber: number
+  //和骑手距离
+  distance: number
+  //订单商品清单
+  orderDetailList: Array<OrderItem>
+}
+
+/**
+ * 订单商品项
+ */
+export type OrderItem = {
+  //商品id
+  id: number
+  //商品名称
+  name: string
+  //订单id
+  orderId: number
+  //菜品id
+  dishId: number
+  //套餐id
+  setmealId: number
+  //口味
+  dishFlavor: string
+  //数量
+  number: number
+  //金额
+  amount: number
+  //图片
+  image: string
+}

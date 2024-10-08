@@ -68,6 +68,17 @@ const deliveryTime = (inputDateTime: string) => {
   // 返回格式化的时间差字符串
   return '剩余' + minutesLast + '分钟'
 }
+
+/**
+ * 查看订单详情
+ * @param orderId 订单id
+ */
+const viewOrderDetail = (orderId: number) => {
+  uni.navigateTo({
+    url: `/pages/orderDetail/orderDetail?orderId=${orderId}`,
+  })
+}
+
 /**
  * 骑手接单
  * @param orderId 订单id
@@ -107,7 +118,12 @@ onMounted(() => {
     </view>
     <!-- 订单列表 -->
     <scroll-view scroll-y="true" @scrolltolower="orderListLower()">
-      <view v-for="item in squareOrderList" :key="item.id" class="order_item">
+      <view
+        v-for="item in squareOrderList"
+        :key="item.id"
+        class="order_item"
+        @tap="viewOrderDetail(item.id)"
+      >
         <view class="price_time">
           <text>{{ '￥' + item.amount }}</text>
           <text>{{ deliveryTime(item.estimatedDeliveryTime) }}</text>
@@ -124,7 +140,7 @@ onMounted(() => {
           }}</span>
           <span class="time">{{ '送达时间' + item.estimatedDeliveryTime }}</span>
         </view>
-        <view class="grab" @tap="takeOrder(item.id)">抢单</view>
+        <view class="grab" @tap.stop="takeOrder(item.id)">抢单</view>
       </view>
     </scroll-view>
     <!-- 占位元素 -->
