@@ -78,6 +78,14 @@ export type OrderDetail = {
   distance: number
   //订单商品清单
   orderDetailList: Array<OrderItem>
+  //经纬度
+  location: string
+  //行政区划编码
+  adcode: string
+  //订单状态 1待付款2待接单3已接单4派送中5已完成6已取消7退款
+  status: number
+  //骑手id
+  riderId: number
 }
 
 /**
