@@ -149,3 +149,11 @@ export type OrderItem = {
   //图片
   image: string
 }
+
+/**上传送达凭证DTO */
+export type uploadDeliveryProofDTO = {
+  //订单id
+  orderId: number
+  //凭证图片
+  deliveryProof: string
+}

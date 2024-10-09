@@ -3,7 +3,13 @@
  */
 
 import { http } from '@/utils/http'
-import type { getSquareOrderDTO, SquareOrder, OrderDetailDTO, OrderDetail } from '@/types/order'
+import type {
+  getSquareOrderDTO,
+  SquareOrder,
+  OrderDetailDTO,
+  OrderDetail,
+  uploadDeliveryProofDTO,
+} from '@/types/order'
 import type { PageResult } from '@/types/common'
 //订单广场查询订单
 export const getSquareOrderListAPI = (getSquareOrderDTO: getSquareOrderDTO) => {
@@ -45,5 +51,14 @@ export const completeOrderAPI = (orderId: number) => {
   return http({
     url: `/rider/complete/${orderId}`,
     method: 'POST',
+  })
+}
+
+/**上传送达凭证 */
+export const uploadDeliveryProofAPI = (uploadDeliveryProofDTO: uploadDeliveryProofDTO) => {
+  return http({
+    url: '/rider/deliveryProof',
+    method: 'POST',
+    data: uploadDeliveryProofDTO,
   })
 }

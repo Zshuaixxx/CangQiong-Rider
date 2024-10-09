@@ -1,9 +1,14 @@
 <script lang="ts" setup>
 import { onLoad } from '@dcloudio/uni-app'
 import { defineProps, ref } from 'vue'
-import { getOrderDetailAPI, takeOrderAPI, completeOrderAPI } from '@/api/order'
+import {
+  getOrderDetailAPI,
+  takeOrderAPI,
+  completeOrderAPI,
+  uploadDeliveryProofAPI,
+} from '@/api/order'
 import { useLocationStore, useRiderStore } from '@/stores'
-import type { OrderDetail, OrderDetailDTO } from '@/types/order'
+import type { OrderDetail, OrderDetailDTO, uploadDeliveryProofDTO } from '@/types/order'
 import { getHourMinute, calculateMinutesDifference } from '@/utils/time'
 
 const locationStore = useLocationStore()
@@ -50,6 +55,39 @@ const takeOrder = async (orderId: number) => {
     icon: 'success',
   })
   getOrderDetail()
+}
+
+const uploadDeliveryProof = async (deliveryProof: string) => {
+  const uploadDeliveryProofDTO: uploadDeliveryProofDTO = {
+    deliveryProof: deliveryProof,
+    orderId: orderDetail.value?.id!,
+  }
+  const res = await uploadDeliveryProofAPI(uploadDeliveryProofDTO)
+  uni.showToast({
+    title: '凭证上传成功',
+    icon: 'success',
+  })
+}
+
+/**拍照凭证 */
+const takePhoto = () => {
+  uni.chooseImage({
+    count: 1,
+    sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
+    sourceType: ['camera'],
+    success: function (res) {
+      uni.uploadFile({
+        url: '/admin/common/upload', //仅为示例，非真实的接口地址
+        filePath: res.tempFilePaths[0],
+        name: 'file',
+        success: (res) => {
+          const resData = JSON.parse(res.data)
+          console.log(resData)
+          uploadDeliveryProof(resData.data)
+        },
+      })
+    },
+  })
 }
 
 /**
@@ -149,7 +187,14 @@ onLoad(() => {
     "
     class="photo_confirm"
   >
-    <view class="photo">拍照留凭</view>
+    <view @tap="takePhoto()">
+      <image
+        src="@/static/images/photo.png"
+        mode="scaleToFill"
+        style="width: 25px; height: 25px; margin: 3px auto"
+      />
+      <view class="photo">拍照留凭</view>
+    </view>
     <view class="confirm" @tap="completeOrder()">确认送达</view>
   </view>
   <!-- 已完成 -->
@@ -258,8 +303,6 @@ onLoad(() => {
   display: flex;
   justify-content: space-between;
   padding: 20rpx;
-}
-.photo {
 }
 .confirm {
   width: 180rpx;
