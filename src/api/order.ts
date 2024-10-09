@@ -33,7 +33,7 @@ export const takeOrderAPI = (orderId: number) => {
 
 /**骑手查看进行中的订单 */
 export const getGoingOrderListAPI = (getSquareOrderDTO: getSquareOrderDTO) => {
-  return http<PageResult<SquareOrder>>({
+  return http<SquareOrder[]>({
     url: '/rider/goingOrder',
     method: 'POST',
     data: getSquareOrderDTO,
