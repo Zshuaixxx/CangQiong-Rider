@@ -39,3 +39,11 @@ export const getGoingOrderListAPI = (getSquareOrderDTO: getSquareOrderDTO) => {
     data: getSquareOrderDTO,
   })
 }
+
+/**订单送达 */
+export const completeOrderAPI = (orderId: number) => {
+  return http({
+    url: `/rider/complete/${orderId}`,
+    method: 'POST',
+  })
+}

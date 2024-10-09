@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { onLoad } from '@dcloudio/uni-app'
 import { defineProps, ref } from 'vue'
-import { getOrderDetailAPI, takeOrderAPI } from '@/api/order'
+import { getOrderDetailAPI, takeOrderAPI, completeOrderAPI } from '@/api/order'
 import { useLocationStore, useRiderStore } from '@/stores'
 import type { OrderDetail, OrderDetailDTO } from '@/types/order'
 import { getHourMinute, calculateMinutesDifference } from '@/utils/time'
@@ -13,6 +13,7 @@ const riderStore = useRiderStore()
 const query = defineProps<{
   orderId: string
 }>()
+
 const orderDetail = ref<OrderDetail>()
 const orderDetailDTO = ref<OrderDetailDTO>({
   orderId: Number(query.orderId),
@@ -25,7 +26,6 @@ const orderDetailDTO = ref<OrderDetailDTO>({
 const getOrderDetail = async () => {
   const res = await getOrderDetailAPI(orderDetailDTO.value)
   orderDetail.value = res.data
-  console.log(res.data)
 }
 
 /**
@@ -47,6 +47,18 @@ const takeOrder = async (orderId: number) => {
   const res = await takeOrderAPI(orderId)
   uni.showToast({
     title: '恭喜，抢单成功',
+    icon: 'success',
+  })
+  getOrderDetail()
+}
+
+/**
+ * 订单送达
+ */
+const completeOrder = async () => {
+  const res = await completeOrderAPI(orderDetail.value?.id!)
+  uni.showToast({
+    title: '恭喜，订单送达成功',
     icon: 'success',
   })
   getOrderDetail()
@@ -135,9 +147,13 @@ onLoad(() => {
     v-else-if="
       orderDetail?.status === 4 && orderDetail.riderId === Number(riderStore.loginInfo?.id)
     "
-  ></view>
+    class="photo_confirm"
+  >
+    <view class="photo">拍照留凭</view>
+    <view class="confirm" @tap="completeOrder()">确认送达</view>
+  </view>
   <!-- 已完成 -->
-  <view v-else-if="orderDetail?.status === 5"></view>
+  <view v-else-if="orderDetail?.status === 5">已完成</view>
   <!-- 状态错误 -->
   <view v-else>订单状态错误</view>
 </template>
@@ -237,5 +253,23 @@ onLoad(() => {
   line-height: 100rpx;
   border-radius: 50rpx;
   background-color: #64e7d8;
+}
+.photo_confirm {
+  display: flex;
+  justify-content: space-between;
+  padding: 20rpx;
+}
+.photo {
+}
+.confirm {
+  width: 180rpx;
+  height: 80rpx;
+  font-size: 30rpx;
+  text-align: center;
+  line-height: 80rpx;
+  border-radius: 50rpx;
+  background-color: #64e7d8;
+  margin-right: 20rpx;
+  color: #fff;
 }
 </style>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
-import { getGoingOrderListAPI } from '@/api/order'
+import { getGoingOrderListAPI, completeOrderAPI } from '@/api/order'
 import { useLocationStore } from '@/stores'
 import { calculateMinutesDifference } from '@/utils/time'
 import type { SquareOrder } from '@/types/order'
@@ -19,6 +19,18 @@ const getGoingOrderList = async () => {
     adcode: locationStore.location?.adcode!,
   })
   goingOrderList.value = res.data
+}
+
+/**
+ * 订单送达
+ */
+const completeOrder = async (orderId: number) => {
+  const res = await completeOrderAPI(orderId)
+  uni.showToast({
+    title: '恭喜，订单送达成功',
+    icon: 'success',
+  })
+  getGoingOrderList()
 }
 
 /**
@@ -58,15 +70,20 @@ onShow(() => {
       }}</span>
       <span class="time">{{ '送达时间' + item.estimatedDeliveryTime }}</span>
     </view>
-    <view class="confirm">确认送达</view>
+    <view class="confirm" @tap.stop="completeOrder(item.id)">确认送达</view>
   </view>
 </template>
 
 <style scoped>
+page {
+  background-color: #f9f9f9;
+}
 .order_item {
-  width: 100%;
+  width: 95%;
+  margin: 20rpx auto;
   background-color: #fff;
   border: 1px solid #eee;
+  border-radius: 20rpx;
   padding: 20rpx;
 }
 .price_time {
