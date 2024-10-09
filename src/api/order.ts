@@ -30,3 +30,12 @@ export const takeOrderAPI = (orderId: number) => {
     method: 'POST',
   })
 }
+
+/**骑手查看进行中的订单 */
+export const getGoingOrderListAPI = (getSquareOrderDTO: getSquareOrderDTO) => {
+  return http<PageResult<SquareOrder>>({
+    url: '/rider/goingOrder',
+    method: 'POST',
+    data: getSquareOrderDTO,
+  })
+}
