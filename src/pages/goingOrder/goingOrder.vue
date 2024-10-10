@@ -5,6 +5,7 @@ import { getGoingOrderListAPI, completeOrderAPI } from '@/api/order'
 import { useLocationStore } from '@/stores'
 import { calculateMinutesDifference } from '@/utils/time'
 import type { SquareOrder } from '@/types/order'
+import { onPullDownRefresh } from '@dcloudio/uni-app'
 
 const locationStore = useLocationStore()
 
@@ -42,6 +43,13 @@ const viewOrderDetail = (orderId: number) => {
     url: `/pages/orderDetail/orderDetail?orderId=${orderId}`,
   })
 }
+
+/**下拉刷新 */
+onPullDownRefresh(() => {
+  goingOrderList.value = []
+  getGoingOrderList()
+  uni.stopPullDownRefresh()
+})
 onShow(() => {
   getGoingOrderList()
 })

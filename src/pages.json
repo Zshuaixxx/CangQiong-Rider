@@ -19,9 +19,9 @@
 			"path": "pages/index/index",
 			"style": {
 				"navigationBarTitleText": "订单广场",
-        "navigationBarTextStyle": "white"
-
-			}
+        "navigationBarTextStyle": "white",
+        "enablePullDownRefresh": true
+			},
 		},
 		{
 			"path": "pages/my/my",
@@ -59,7 +59,8 @@
 			"path": "pages/goingOrder/goingOrder",
 			"style": {
 				"navigationBarTitleText": "正在配送",
-        "navigationBarTextStyle": "white"
+        "navigationBarTextStyle": "white",
+        "enablePullDownRefresh": true
 
 			}
 		},

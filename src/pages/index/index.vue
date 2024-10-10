@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { useLocationStore, useRiderStore } from '@/stores'
+import { useLocationStore } from '@/stores'
 import { chooseLocation } from '@/composables/useLocation'
 import { getSquareOrderListAPI, takeOrderAPI } from '@/api/order'
 import type { getSquareOrderDTO, SquareOrder } from '@/types/order'
+import { onPullDownRefresh } from '@dcloudio/uni-app'
 const locationStore = useLocationStore()
 
 const page = ref(1)
@@ -90,6 +91,14 @@ const takeOrder = async (orderId: number) => {
     icon: 'success',
   })
 }
+
+/**下拉刷新 */
+onPullDownRefresh(() => {
+  squareOrderList.value = []
+  refreshOrderList()
+  uni.stopPullDownRefresh()
+})
+
 onMounted(() => {
   if (!locationStore.location) {
     uni.showToast({
