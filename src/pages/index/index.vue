@@ -114,7 +114,7 @@ onMounted(() => {
     longitude: locationStore.location!.longitude,
     adcode: locationStore.location!.adcode,
   }
-  getSquareOrderList(squareOrderDTO.value)
+  getSquareOrderList(squareOrderDTO.value!)
 })
 </script>
 

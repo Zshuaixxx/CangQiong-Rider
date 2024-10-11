@@ -11,3 +11,19 @@ export type riderLocation = {
   //行政区划编码
   adcode: number
 }
+
+/**
+ * 骑手简要信息
+ */
+export type RiderProfile = {
+  /**骑手id */
+  id: number
+  /**骑手头像 */
+  avatar: string
+  /**骑手名称 */
+  name: string
+  /**今日收益 */
+  todayIncome: number
+  /**本月收益 */
+  monthIncome: number
+}
