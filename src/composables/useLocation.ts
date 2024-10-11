@@ -27,6 +27,7 @@ const chooseLocation = async () => {
         longitude: res.longitude,
         adcode: (resAdcode.data as any).result.ad_info.adcode,
       }
+      locationStore.clearloction()
       locationStore.setlocation(newLocation)
     },
     fail: (fail) => {

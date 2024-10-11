@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import { useLocationStore } from '@/stores'
 import { chooseLocation } from '@/composables/useLocation'
 import { getSquareOrderListAPI, takeOrderAPI } from '@/api/order'
@@ -10,7 +10,7 @@ const locationStore = useLocationStore()
 const page = ref(1)
 const pageSize = ref(20)
 const total = ref(0)
-const squareOrderDTO = ref<getSquareOrderDTO>()
+var squareOrderDTO = ref<getSquareOrderDTO>()
 const squareOrderList = ref<SquareOrder[]>([])
 const isLowerLoading = ref(false)
 /**
@@ -107,13 +107,13 @@ onMounted(() => {
     })
     chooseLocation()
   }
-  squareOrderDTO.value = {
+  squareOrderDTO = computed<getSquareOrderDTO>(() => ({
     page: page.value,
     pageSize: pageSize.value,
-    latitude: locationStore.location!.latitude,
-    longitude: locationStore.location!.longitude,
-    adcode: locationStore.location!.adcode,
-  }
+    latitude: locationStore.location?.latitude!,
+    longitude: locationStore.location?.longitude!,
+    adcode: locationStore.location?.adcode!,
+  }))
   getSquareOrderList(squareOrderDTO.value!)
 })
 </script>
