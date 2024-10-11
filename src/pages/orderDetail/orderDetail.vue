@@ -198,7 +198,7 @@ onLoad(() => {
     <view class="confirm" @tap="completeOrder()">确认送达</view>
   </view>
   <!-- 已完成 -->
-  <view v-else-if="orderDetail?.status === 5">已完成</view>
+  <view v-else-if="orderDetail?.status === 5" class="completed">已完成</view>
   <!-- 状态错误 -->
   <view v-else>订单状态错误</view>
 </template>
@@ -314,5 +314,15 @@ onLoad(() => {
   background-color: #64e7d8;
   margin-right: 20rpx;
   color: #fff;
+}
+.completed {
+  width: 80%;
+  height: 80rpx;
+  text-align: center;
+  line-height: 80rpx;
+  margin: 20rpx auto;
+  background-color: #64e7d8;
+  color: #fff;
+  border-radius: 50rpx;
 }
 </style>
