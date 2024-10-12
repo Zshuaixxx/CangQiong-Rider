@@ -27,3 +27,32 @@ export type RiderProfile = {
   /**本月收益 */
   monthIncome: number
 }
+
+/**
+ * 骑手详细个人信息
+ */
+export type RiderDetail = {
+  /** 骑手ID*/
+  id: number
+
+  /** 用户手机号码*/
+  phone: string
+
+  /*** 用户密码*/
+  password: string
+
+  /** 用户的OpenID*/
+  openid: string
+
+  /** 用户的注册时间*/
+  registerTime: string
+
+  /**用户的性别信息。0位置 1男 2女*/
+  sex: number
+
+  /** 用户的头像地址*/
+  avatar: string
+
+  /** 骑手名称*/
+  name: string
+}

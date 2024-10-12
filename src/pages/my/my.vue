@@ -7,9 +7,23 @@ import type { RiderProfile } from '@/types/rider'
 const riderStore = useRiderStore()
 
 const riderProfile = ref<RiderProfile>()
+/**
+ * 获取骑手简要信息
+ */
 const getRiderProfile = async () => {
   const res = await getRiderProfileAPI(riderStore.loginInfo?.id!)
   riderProfile.value = res.data
+}
+
+/**
+ * 页面跳转
+ */
+const goPage = (page: string) => {
+  if (page === 'toMyDetail') {
+    uni.navigateTo({
+      url: '/pages/myDetailPage/myDetailPage',
+    })
+  }
 }
 
 onMounted(() => {
@@ -45,17 +59,17 @@ onMounted(() => {
     </view>
     <!-- 更多 -->
     <view class="more_box">
-      <view class="more_item">
+      <view class="more_item" @tap="goPage('toMyDetail')">
         <image src="@/static/images/myOrder.png" class="icon" />
         <view class="more_item_text">我的订单</view>
         <image src="@/static/images/right.png" class="icon" />
       </view>
-      <view class="more_item">
+      <view class="more_item" @tap="goPage('toMyDetail')">
         <image src="@/static/images/myIncome.png" class="icon" />
         <view class="more_item_text">我的收益</view>
         <image src="@/static/images/right.png" class="icon" />
       </view>
-      <view class="more_item">
+      <view class="more_item" @tap="goPage('toMyDetail')">
         <image src="@/static/images/myInfo.png" class="icon" />
         <view class="more_item_text">我的信息</view>
         <image src="@/static/images/right.png" class="icon" />
